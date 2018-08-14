@@ -3,7 +3,7 @@ const toDo = [{
     completed: false
 }, {
     text:'Listen to music',
-    completed: false
+    completed: true
 },{
     text:'Go to sleep',
     completed: false
@@ -21,23 +21,23 @@ function removeToDo(toDos, toDoTitle) {
     }
 }
 
-console.log(toDo);
-removeToDo(toDo, 'Listen to music');
-removeToDo(toDo, 'Listen to music');
-console.log(toDo);
+function getThingsToDo(toDos) {
+    return toDos.filter(function(toDo) {
+        return !toDo.completed;
+    });
+}
 
-// toDo.splice(2,1);
-// toDo.push('New Task 6');
-// toDo.shift();
-// console.log (`You have ${toDo.length} tasks to complete.`);
-// console.log(toDo);
+function sortToDos(toDos) {
+    toDos.sort(function(objA, objB) {
+        if (objA.completed > objB.completed) {
+            return 1;
+        } else if (objB.completed > objA.completed) {
+            return -1;
+        } else {
+            return 0;
+        }
+    });
+}
 
-// console.log('loop');
-//
-// toDo.forEach(function(element, index){
-//    console.log(`${index + 1}. ${element}`);
-// });
-//
-// for(let i = 0; i < toDo.length; i++) {
-//     console.log(`${i + 1}. ${toDo[i]}`)
-// }
+sortToDos(toDo);
+console.log(toDo);

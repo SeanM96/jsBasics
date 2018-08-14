@@ -9,6 +9,51 @@ const notes = [{
     body:'BJJ'
 }];
 
+
+const findNote = function(notes, noteTitle) {
+    return notes.find(function(note) {
+        return note.title.toUpperCase() === noteTitle.toUpperCase()
+    });
+};
+
+function findNotes(notes, query) {
+        return notes.filter(function(note) {
+            const isTitleMatch = note.title.toLowerCase().includes(query.toLowerCase());
+            const isBodyMatch = note.body.toLowerCase().includes(query.toLowerCase());
+            return isTitleMatch || isBodyMatch;
+        });
+}
+
+function findNotes2(notes, query, type) {
+    if (notes !== undefined && query !== undefined && type !== undefined ) {
+        return notes.filter(function (note) {
+            if (type === 'title')
+                return note.title.toLowerCase().includes(query.toLowerCase());
+            else if (type === 'body')
+                return note.body.toLowerCase().includes(query.toLowerCase());
+            else {
+                return 'Error, no search type specified'
+            }
+        });
+    }
+    else
+        return 'Function called wrong';
+}
+
+function sortNotes(notes) {
+    notes.sort(function(objA, objB) {
+        if (objA.title.toLowerCase() < objB.title.toLowerCase()) {
+            return -1;
+        } else if (objB.title.toLowerCase() < objA.title.toLowerCase()) {
+            return 1;
+        } else {
+            return 0;
+        }
+    });
+}
+
+sortNotes(notes);
+console.log(notes);
 // console.log(notes.pop());
 // notes.push('Note 4');
 //
@@ -31,14 +76,6 @@ const notes = [{
 // for(let i=0; i < notes.length; i++) {
 //     console.log(notes[i]);
 // }
-
-
-const findNote = function(notes, noteTitle) {
-    return notes.find(function(note) {
-        return note.title.toUpperCase() === noteTitle.toUpperCase()
-    });
-};
-
 // const findNote = function(notes, noteTitle) {
 //     const index = notes.findIndex(function(note) {
 //         return note.title.toUpperCase() === noteTitle.toUpperCase()
@@ -46,8 +83,8 @@ const findNote = function(notes, noteTitle) {
 //     return notes[index];
 // };
 
-const note = findNote(notes, 'listen to music');
-console.log(note);
+// const note = findNote(notes, 'listen to music');
+// console.log(note);
 //
 // console.log(notes.length);
 // console.log(notes);
