@@ -19,6 +19,7 @@ const toDo = [{
 }];
 
 function init(list) {
+    document.querySelector('#hide-completed').checked = false;
     incompleteTasks(list);
     list.forEach(function(element) {
         const newEl = document.createElement('p');
@@ -27,35 +28,48 @@ function init(list) {
     });
 }
 
-function incompleteTasks(list) {
-    let count = 0;
-    list.forEach(function (element) {
-        if (!element.completed)
-            count++;
+const filters = {
+    searchText:'',
+    hideCompleted: false
+};
+
+function renderTodos(filter, list) {
+    let filteredTodos;
+    if(filter === filters.hideCompleted) {
+        const hiddenTodos = list.filter(function(element) {
+            return !element.completed
+        });
+         filteredTodos = hiddenTodos.filter(function(element) {
+            return element.text.toLowerCase().includes(filter.toLowerCase());
+        });
+    }
+    else {
+     filteredTodos = list.filter(function(element) {
+        return element.text.toLowerCase().includes(filter.toLowerCase());
     });
-    const newP = document.createElement('p');
-    newP.textContent = `You have ${count} left to complete`;
-    document.querySelector('#todos').appendChild(newP);
 }
 
+    document.querySelector('#todos').innerHTML = '';
+    incompleteTasks(filteredTodos);
+
+    filteredTodos.forEach(function(element) {
+            const newEl = document.createElement('p');
+            newEl.textContent = element.text;
+            document.querySelector('#todos').appendChild(newEl);
+    })
+}
+
+
 //MORE EFFICIENT WAY
-function moreEfficientIncompleteTasks() {
+function incompleteTasks() {
     const incompleteTodos = toDo.filter(function (todo) {
         return !todo.completed
     });
     const summary = document.createElement('h2');
     summary.textContent = `You have ${incompleteTodos.length} todos left`
-    document.body.appendChild(summary);
+    document.querySelector('#todos').appendChild(summary);
 }
 
-const filters = {
-    searchText:''
-};
-
-document.querySelector('#search-text').addEventListener('input', function(e) {
-    filters.searchText = e.target.value;
-    renderTodos(filters.searchText, toDo);
-});
 
 document.querySelector('#add-todo').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -75,19 +89,17 @@ document.querySelector('#add-todo').addEventListener('submit', function(e) {
         document.querySelector('#todos').appendChild(newEl);
     })});
 
-function renderTodos(filter, list) {
-    const filteredTodos = list.filter(function(element) {
-        return element.text.toLowerCase().includes(filter.toLowerCase());
-    });
+document.querySelector('#search-text').addEventListener('input', function(e) {
+    filters.searchText = e.target.value;
+    renderTodos(filters.searchText, toDo);
+});
 
-    document.querySelector('#todos').innerHTML = '';
-    incompleteTasks(filteredTodos);
-
-    filteredTodos.forEach(function(element) {
-            const newEl = document.createElement('p');
-            newEl.textContent = element.text;
-            document.querySelector('#todos').appendChild(newEl);
-    })
-}
+document.querySelector('#hide-completed').addEventListener('change', function(e) {
+   filters.hideCompleted = e.target.checked;
+   if(filters.searchText.strip() === '' ) {
+       init(toDo);
+   }
+   renderTodos(filters.hideCompleted, toDo);
+});
 
 init(toDo);
