@@ -1,22 +1,15 @@
-const toDo = [{
-    text:'Go to america',
-    completed: false
-}, {
-    text:'Box',
-    completed: true
-}, {
-    text:'Go to bjj',
-    completed: false
-}, {
-    text:'Program',
-    completed: true
-}, {
-    text:'Listen to music',
-    completed: false
-},{
-    text:'Go to sleep',
-    completed: true
-}];
+let toDo = [];
+let todoJSON = localStorage.getItem('todo');
+
+if (todoJSON != null) {
+    toDo = JSON.parse(todoJSON);
+}
+
+const filters = {
+    searchText:'',
+    hideCompleted: false
+};
+
 
 function init(list) {
     incompleteTasks(list);
@@ -48,13 +41,15 @@ function moreEfficientIncompleteTasks() {
     document.body.appendChild(summary);
 }
 
-const filters = {
-    searchText:''
-};
 
 document.querySelector('#search-text').addEventListener('input', function(e) {
     filters.searchText = e.target.value;
-    renderTodos(filters.searchText, toDo);
+    renderTodos(filters, toDo);
+});
+
+document.querySelector('#hide-completed').addEventListener('change', function(e) {
+    filters.hideCompleted = e.target.checked;
+    renderTodos(filters, toDo)
 });
 
 document.querySelector('#add-todo').addEventListener('submit', function(e) {
@@ -63,31 +58,30 @@ document.querySelector('#add-todo').addEventListener('submit', function(e) {
         text: e.target.elements.addTodo.value,
         completed: false
     });
+    localStorage.setItem('todo', JSON.stringify(toDo));
 
+    renderTodos(filters, toDo);
     e.target.elements.addTodo.value = '';
-    document.querySelector('#todos').innerHTML = '';
-    incompleteTasks(toDo);
-    //renderTodos(filter, todo);
-
-    toDo.forEach(function(element) {
-        const newEl = document.createElement('p');
-        newEl.textContent = element.text;
-        document.querySelector('#todos').appendChild(newEl);
-    })});
+});
 
 function renderTodos(filter, list) {
-    const filteredTodos = list.filter(function(element) {
-        return element.text.toLowerCase().includes(filter.toLowerCase());
+    let filteredTodos = list.filter(function(element) {
+        return element.text.toLowerCase().includes(filter.searchText.toLowerCase());
     });
+    if(filter.hideCompleted) {
+        filteredTodos = filteredTodos.filter(function (element) {
+            return !element.completed
+        });
+    }
 
     document.querySelector('#todos').innerHTML = '';
-    incompleteTasks(filteredTodos);
+    incompleteTasks(list);
 
     filteredTodos.forEach(function(element) {
             const newEl = document.createElement('p');
             newEl.textContent = element.text;
             document.querySelector('#todos').appendChild(newEl);
-    })
+    });
 }
 
 init(toDo);
