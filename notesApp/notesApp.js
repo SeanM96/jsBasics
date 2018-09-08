@@ -20,13 +20,11 @@ document.querySelector('#search-text').addEventListener('input', function(e) {
     renderNotes(notes,filters);
 });
 
-<<<<<<< HEAD
 document.querySelector('#filterBy').addEventListener('change', function(e) {
-   console.log(e.target.value);
-=======
+    console.log(e.target.value);
+});
 document.querySelector('#for-fun').addEventListener('change', function(e){
     console.log(e.target.checked);
->>>>>>> bbd94de9b17251e85b1133a1762e1a82a882351d
 });
 
 // document.querySelector('#name-form').addEventListener('submit', function(e) {

@@ -12,7 +12,6 @@ const filters = {
 
 
 function init(list) {
-    document.querySelector('#hide-completed').checked = false;
     incompleteTasks(list);
     list.forEach(function(element) {
         const newEl = document.createElement('p');
@@ -21,49 +20,27 @@ function init(list) {
     });
 }
 
-const filters = {
-    searchText:'',
-    hideCompleted: false
-};
-
-function renderTodos(filter, list) {
-    let filteredTodos;
-    if(filter === filters.hideCompleted) {
-        const hiddenTodos = list.filter(function(element) {
-            return !element.completed
-        });
-         filteredTodos = hiddenTodos.filter(function(element) {
-            return element.text.toLowerCase().includes(filter.toLowerCase());
-        });
-    }
-    else {
-     filteredTodos = list.filter(function(element) {
-        return element.text.toLowerCase().includes(filter.toLowerCase());
+function incompleteTasks(list) {
+    let count = 0;
+    list.forEach(function (element) {
+        if (!element.completed)
+            count++;
     });
+    const newP = document.createElement('p');
+    newP.textContent = `You have ${count} left to complete`;
+    document.querySelector('#todos').appendChild(newP);
 }
-
-    document.querySelector('#todos').innerHTML = '';
-    incompleteTasks(filteredTodos);
-
-    filteredTodos.forEach(function(element) {
-            const newEl = document.createElement('p');
-            newEl.textContent = element.text;
-            document.querySelector('#todos').appendChild(newEl);
-    })
-}
-
 
 //MORE EFFICIENT WAY
-function incompleteTasks() {
+function moreEfficientIncompleteTasks() {
     const incompleteTodos = toDo.filter(function (todo) {
         return !todo.completed
     });
     const summary = document.createElement('h2');
     summary.textContent = `You have ${incompleteTodos.length} todos left`
-    document.querySelector('#todos').appendChild(summary);
+    document.body.appendChild(summary);
 }
 
-<<<<<<< HEAD
 
 document.querySelector('#search-text').addEventListener('input', function(e) {
     filters.searchText = e.target.value;
@@ -74,8 +51,6 @@ document.querySelector('#hide-completed').addEventListener('change', function(e)
     filters.hideCompleted = e.target.checked;
     renderTodos(filters, toDo)
 });
-=======
->>>>>>> bbd94de9b17251e85b1133a1762e1a82a882351d
 
 document.querySelector('#add-todo').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -89,7 +64,6 @@ document.querySelector('#add-todo').addEventListener('submit', function(e) {
     e.target.elements.addTodo.value = '';
 });
 
-<<<<<<< HEAD
 function renderTodos(filter, list) {
     let filteredTodos = list.filter(function(element) {
         return element.text.toLowerCase().includes(filter.searchText.toLowerCase());
@@ -109,19 +83,5 @@ function renderTodos(filter, list) {
             document.querySelector('#todos').appendChild(newEl);
     });
 }
-=======
-document.querySelector('#search-text').addEventListener('input', function(e) {
-    filters.searchText = e.target.value;
-    renderTodos(filters.searchText, toDo);
-});
-
-document.querySelector('#hide-completed').addEventListener('change', function(e) {
-   filters.hideCompleted = e.target.checked;
-   if(filters.searchText.strip() === '' ) {
-       init(toDo);
-   }
-   renderTodos(filters.hideCompleted, toDo);
-});
->>>>>>> bbd94de9b17251e85b1133a1762e1a82a882351d
 
 init(toDo);
