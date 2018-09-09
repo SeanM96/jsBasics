@@ -8,24 +8,41 @@ function getSavedNotes() {
         return [];
     }
 }
+
 function renderNotes (notes, filters) {
+    if(notes != null || notes != []) {
     const filteredNotes = notes.filter(function(note) {
         return note.title.toLowerCase().includes(filters.searchText.toLowerCase());
     });
-    generateDOM(filteredNotes);
+
+    document.querySelector('#notes').innerHTML = '';
+
+    filteredNotes.forEach(function(note) {
+        let newRenderNote = generateDOM(note);
+        document.querySelector('#notes').appendChild(newRenderNote);
+    });
+}
 }
 
 function generateDOM(notes) {
-    document.querySelector('#notes').innerHTML = '';
-    filteredNotes.forEach(function (note) {
-        const newNote = document.createElement('p');
+    const container = document.createElement('div');
+    const note = document.createElement('span');
+    const button = document.createElement('button');
 
-        if (note.title.length > 0) {
-            newNote.textContent = note.title;
+    button.textContent = 'x'
+    container.appendChild(button);
+
+        if (notes.title.length > 0) {
+            note.textContent = notes.title;
         }
         else {
-            newNote.textContent = 'Unnamed note';
+            note.textContent = 'Unnamed note';
         }
-        document.querySelector('#notes').appendChild(newNote);
-    })
+
+        container.appendChild(note);
+        return container
+}
+
+function saveNotes(notes) {
+    localStorage.setItem('notes', JSON.stringify(notes));
 }

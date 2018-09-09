@@ -5,6 +5,11 @@
     <body>
     <h1>Notes App</h1>
     <h2>Never forget!</h2>
+    <form id="add-note" style="padding-bottom: 50px;">
+        <input id="note-body" type="text" placeholder="Title" name="noteTitle">
+        <input id="note-body" type="text" placeholder="Details" name="noteBody">
+        <button id="createButton">Create new note</button>
+    </form>
     <input id="search-text" type="text" placeholder="Search notes...">
     <select id="filterBy">
         <option value="byEdited">Sort by last edited</option>
@@ -12,14 +17,7 @@
         <option value="alphabetical">Sort alphabetically</option>
     </select>
     <div id="notes"></div>
-    <button id="create">Create new note</button>
-<<<<<<< HEAD
-    <script src="notes-functions.js"></script>
-=======
-    <label>
-        <input id="for-fun" type="checkbox"> Check me
-    </label>
->>>>>>> bbd94de9b17251e85b1133a1762e1a82a882351d
-    <script src="notesApp.js"></script>
     </body>
+    <script src="notes-functions.js"></script>
+    <script src="notesApp.js"></script>
 </html>
